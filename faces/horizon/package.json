@@ -1,0 +1,29 @@
+{
+  "name": "horizon",
+  "author": "YOUR NAME",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Horizon",
+    "uuid": "d4bb38b4-1beb-4dba-939c-27117e6d0ad1",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["gabbro", "chalk"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": [
+        {
+          "type": "font",
+          "name": "FONT_DIGITS_96",
+          "file": "fonts/DejaVuSans-Bold.ttf",
+          "characterRegex": "[0-9]"
+        }
+      ]
+    }
+  }
+}

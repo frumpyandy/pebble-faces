@@ -1,0 +1,29 @@
+{
+  "name": "ninefold",
+  "author": "YOUR NAME",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Ninefold",
+    "uuid": "bbc68390-18e4-4d3b-b287-97dd223f38e9",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["gabbro", "chalk"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": [
+        {
+          "type": "font",
+          "name": "FONT_DIGITS_72",
+          "file": "fonts/DejaVuSans-Bold.ttf",
+          "characterRegex": "[0-9]"
+        }
+      ]
+    }
+  }
+}

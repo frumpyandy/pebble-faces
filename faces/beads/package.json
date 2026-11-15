@@ -1,0 +1,22 @@
+{
+  "name": "beads",
+  "author": "YOUR NAME",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Beads",
+    "uuid": "64ef6506-4c49-459c-8545-d2063af6e1a9",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["gabbro", "chalk"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": []
+    }
+  }
+}

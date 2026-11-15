@@ -1,0 +1,22 @@
+{
+  "name": "tally",
+  "author": "YOUR NAME",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Tally",
+    "uuid": "c753ada1-fe9f-478a-8a8c-ec1896b68f3b",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["gabbro", "chalk"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": []
+    }
+  }
+}

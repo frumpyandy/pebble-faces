@@ -1,0 +1,29 @@
+{
+  "name": "sweep",
+  "author": "YOUR NAME",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Sweep",
+    "uuid": "fdcccc8f-e61e-43f8-b896-0f6f2302c6db",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["gabbro", "chalk"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "resources": {
+      "media": [
+        {
+          "type": "font",
+          "name": "FONT_DIGITS_96",
+          "file": "fonts/DejaVuSans-Bold.ttf",
+          "characterRegex": "[0-9]"
+        }
+      ]
+    }
+  }
+}

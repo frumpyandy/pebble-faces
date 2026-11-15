@@ -1,12 +1,18 @@
 # Round Faces — TTMM-inspired watchfaces for Pebble Round 2
 
-Five minimal watchfaces for the **Pebble Round 2** (SDK platform `gabbro`, 260×260,
+Six minimal watchfaces for the **Pebble Round 2** (SDK platform `gabbro`, 260×260,
 64-colour e-paper) that also build for the original **Pebble Time Round** (`chalk`,
 180×180). They borrow the spirit of the TTMM faces from the original Pebble:
 time as a *count of things* (dots, ticks, blocks), lots of empty space, one accent
 colour, and nothing on screen that is not telling you the time.
 
 ![contact sheet](design/contact_sheet.png)
+
+Round-native translations of the TIC-9TTMM / TIC-10TTMM counting rule
+(`python3 design/render_mockups.py --round`). Sectors is built; Arcs and Spokes
+are mockups only.
+
+![round concepts](design/round_concepts.png)
 
 ## The faces
 
@@ -16,6 +22,7 @@ colour, and nothing on screen that is not telling you the time.
 | **Tally** | Sixty dots around the rim light up one per minute, clockwise from 12. The fives are accent-coloured and the current minute is a slightly larger accent dot. The hour is a dot-matrix numeral. |
 | **Ninefold** | A nod to TIC-9TTMM, bent into a wheel. Six 3×3 squares surround the hour numeral, one per ten minutes, starting top-right. Dots light up one per minute; when a square's tenth minute arrives the whole square turns accent. |
 | **Sweep** | The outer band fills clockwise from 12 as the minutes pass. Twelve short ticks sit inside the band; the current hour's tick is long and white. Big hour numeral in the middle. |
+| **Sectors** | TIC-9TTMM's rule, rebuilt for a circle. The ring is six 60° sectors, one per ten minutes, clockwise from 12. In the sector currently filling, nine dots light up one per minute in a 3×3 polar grid. The tenth minute fills the whole sector solid, and at :30 the first three solid sectors fuse into a half-disc. Future sectors stay empty. |
 | **Horizon** | A horizon line sinks from near the top (:00) to near the bottom (:59). Above it the face is light, below it dark, and the hour numeral inverts where the line cuts through it. |
 
 Every face shares the same two quiet status signals:
@@ -41,7 +48,8 @@ pebble-faces/
     ├── tally/
     ├── ninefold/              #   ninefold, sweep and horizon bundle a
     ├── sweep/                 #   digits-only subset of DejaVu Sans Bold
-    └── horizon/
+    ├── horizon/
+    └── sectors/
 ```
 
 Each project is a complete, standard Pebble SDK 4 project (`package.json`,
@@ -105,6 +113,16 @@ Principles pulled from the TTMM family and applied to a round, colour e-paper sc
    connection adds one hollow ring. No glyphs.
 5. **Hour hands are optional.** Beads shows that a dot on a track reads as a hand once
    the eye learns it, and it leaves the face almost empty.
+
+**Translating TIC-9 / TIC-10 to a circle.** Those faces count minutes as nine
+dots that become a square on the tenth, and three squares that become a bar at
+thirty. The rectangle is doing real work there, so the question was what plays
+the role of "square" and "bar" on a round screen. Sectors answers: the square
+becomes a 3×3 cell of a polar grid (three radii × three angles) inside a 60°
+sector, the solid square becomes a solid wedge, and the bar becomes the half-disc
+the first three wedges fuse into at :30. Arcs applies the same rule to the rim
+only, and Spokes turns each ten minutes into a ray; both are in the renderer for
+comparison.
 
 Ideas not built yet, in rough order of how much I like them:
 

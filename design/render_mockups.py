@@ -242,5 +242,118 @@ def main():
     print("wrote", os.path.join(out, "contact_sheet.png"))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and "--round" not in sys.argv:
     main()
+
+
+# ================================================================
+# Round-native translations of TIC-9TTMM / TIC-10TTMM
+#   nine dots -> a square -> (three squares) a bar
+# becomes
+#   nine dots -> a sector/arc -> (three of them) a half ring
+# ================================================================
+
+def _polar_grid_dot(c, r_rows, deg0, span, k, radius, color):
+    """Dot k (0..8) of a 3x3 polar grid cell: rows = radius (outer first), cols = angle."""
+    row, col = k // 3, k % 3
+    deg = deg0 + span * (2 * col + 1) / 6.0
+    c.dot(polar(r_rows[row], deg), radius, color)
+
+
+def face_sectors(h, m):
+    """Six 60-degree sector cells in an annulus; a full ten minutes fills the sector solid;
+    the first three sectors fuse into a half ring at :30.  Hour in the clear centre."""
+    c = Canvas()
+    R_OUT, R_IN = 122, 58
+    rows = (110, 90, 70)
+    gap = 1.5                      # degrees between completed sectors (before fusing)
+    for s in range(6):
+        deg0 = s * 60
+        complete = m >= (s + 1) * 10
+        if complete:
+            fused = s < 3 and m >= 30
+            a0 = deg0 + (0 if fused else gap)
+            a1 = deg0 + 60 - (0 if fused else gap)
+            if fused and s > 0:
+                a0 = deg0 - 1    # overlap to hide seams
+            c.arc_band(R_OUT, R_OUT - R_IN, a0, a1, ACCENT)
+        elif m >= s * 10:          # the sector currently filling: show its nine positions
+            for k in range(9):
+                on = s * 10 + k + 1 <= m
+                _polar_grid_dot(c, rows, deg0, 60, k, 5.5 if on else 2.0, FG if on else DIM)
+        # future sectors stay empty
+    hh = h % 12 or 12
+    c.text(str(hh), 64, (CX, CY - 2), FG)
+    return c.finish()
+
+
+def face_arcs(h, m):
+    """Same counting rule, but on the rim only: dots become solid arcs, arcs fuse at :30."""
+    c = Canvas()
+    R = 118
+    for s in range(6):
+        deg0 = s * 60
+        complete = m >= (s + 1) * 10
+        if complete:
+            fused = s < 3 and m >= 30
+            a0 = deg0 + (0 if fused else 2)
+            a1 = deg0 + 60 - (0 if fused else 2)
+            if fused and s > 0:
+                a0 = deg0 - 1
+            c.arc_band(R + 6, 12, a0, a1, ACCENT)
+        else:
+            for k in range(9):
+                on = s * 10 + k + 1 <= m
+                deg = deg0 + 6 * (k + 1) - 3 + 3   # nine dots spread over the sector's first 54 degrees
+                deg = deg0 + 3 + 6 * k
+                c.dot(polar(R, deg), 4 if on else 1.8, FG if on else DIM)
+    hh = h % 12 or 12
+    c.text(str(hh), 104, (CX, CY - 4), FG)
+    return c.finish()
+
+
+def face_spokes(h, m):
+    """Six spokes pointing at :10, :20 ... :60 on the dial; nine dots per spoke from the
+    centre outward; a completed spoke becomes a solid ray."""
+    c = Canvas()
+    R0, R1 = 44, 120
+    for s in range(6):
+        deg = (s + 1) * 60
+        complete = m >= (s + 1) * 10
+        if complete:
+            c.line(polar(R0, deg), polar(R1, deg), 9, ACCENT)
+        else:
+            for k in range(9):
+                on = s * 10 + k + 1 <= m
+                r = R0 + (R1 - R0) * k / 8.0
+                c.dot(polar(r, deg), 4.5 if on else 1.8, FG if on else DIM)
+    hh = h % 12 or 12
+    c.text(str(hh), 52, (CX, CY - 1), FG)
+    return c.finish()
+
+
+ROUND_FACES = {"sectors": face_sectors, "arcs": face_arcs, "spokes": face_spokes}
+ROUND_TIMES = [(10, 8), (4, 23), (7, 30), (11, 57)]
+
+
+def main_round():
+    out = os.path.dirname(os.path.abspath(__file__))
+    tile, pad = W * 2, 16
+    sheet = Image.new("RGB", (len(ROUND_TIMES) * (tile + pad) + pad,
+                              len(ROUND_FACES) * (tile + pad) + pad + 30), (24, 24, 24))
+    label_font = ImageFont.truetype(FONT_PATH, 22)
+    sd = ImageDraw.Draw(sheet)
+    for row, (name, fn) in enumerate(ROUND_FACES.items()):
+        for col, (h, m) in enumerate(ROUND_TIMES):
+            img = fn(h, m)
+            img.save(os.path.join(out, f"{name}_{h:02d}{m:02d}.png"))
+            x = pad + col * (tile + pad)
+            y = pad + 30 + row * (tile + pad)
+            sheet.paste(img, (x, y))
+            sd.text((x + 8, y + 4), f"{name}  {h}:{m:02d}", fill=(200, 200, 200), font=label_font)
+    sheet.save(os.path.join(out, "round_concepts.png"))
+    print("wrote", os.path.join(out, "round_concepts.png"))
+
+
+if __name__ == "__main__" and "--round" in sys.argv:
+    main_round()

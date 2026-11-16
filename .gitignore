@@ -1,2 +1,4 @@
 faces/*/build/
 __pycache__/
+faces/*/node_modules/
+faces/*/package-lock.json

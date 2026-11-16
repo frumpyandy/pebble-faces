@@ -33,6 +33,23 @@ Every face shares the same two quiet status signals:
 There is deliberately no date, no seconds, no weather. Faces redraw once a minute
 (`MINUTE_UNIT`), which is the battery-friendly choice on e-paper.
 
+## Settings (Sectors)
+
+Sectors has a settings page, built with [Clay](https://github.com/pebble/clay).
+Open the Pebble app on your phone, find Sectors under watchfaces, and tap the
+gear. You can set:
+
+- **Theme:** dark or light
+- **Accent colour:** any of the watch's 64 colours
+- **Low-battery red:** whether the accent turns red at 20 %
+- **Hour numeral:** Bold (bundled DejaVu), Geometric (the system LECO font) or Dots
+- **Seams:** thin gaps between finished sectors, or one growing pie
+- **Fill order:** ring by ring (default) or clockwise column by column
+
+Settings persist on the watch. Because it pulls in an npm package, run
+`npm install` in `faces/sectors/` once before the first `pebble build`.
+The other faces will get the same page once you've decided which ones to keep.
+
 ## Layout
 
 ```

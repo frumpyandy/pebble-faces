@@ -35,7 +35,7 @@ There is deliberately no date, no seconds, no weather. Faces redraw once a minut
 
 ## Settings (Sectors)
 
-Sectors has a settings page, built with [Clay](https://github.com/pebble/clay).
+Sectors has a settings page, built with the Rebble-maintained [Clay](https://github.com/pebble-dev/clay) fork (`@rebble/clay`, which knows the Round 2 platform; the original `pebble-clay` npm package does not).
 Open the Pebble app on your phone, find Sectors under watchfaces, and tap the
 gear. You can set:
 
